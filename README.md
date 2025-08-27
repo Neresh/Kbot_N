@@ -201,6 +201,6 @@ customtkinter
 
 ⚠️ - L'objectif principal de ce bot est de simplifier les tâches répétitives et de réduire l'ennui pendant votre jeu.
 
-⚠️ - **Nous n'encourageons pas le multi-boting et ne le supportons pas de toute façon** (cela détruit l'économie d'un serveur).
+⚠️ - **Nous n'encourageons pas le multi-boting et ne le supportons pas de toute façon** (cela détruit l'économie d'un serveur). > Ici on aime voir tourner une machine pour nos beaux yeux.
 
 🧪 Bon farm, bon drop et à bientôt dans le Monde des Douze 🎮🐉
