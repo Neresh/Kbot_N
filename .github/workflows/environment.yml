@@ -1,0 +1,8 @@
+name: kbot_env
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - <your-required-pip-packages>
