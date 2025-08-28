@@ -1,11 +1,11 @@
 import customtkinter as ctk
 from tkinter import messagebox
-import tkinter.font as tkFont
 import subprocess
 import os
 from PIL import Image
 import json
 import tkinter as tk
+from version import get_version
 
 
 CONFIG_PATH = "config.txt"
@@ -96,7 +96,7 @@ ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
 root = ctk.CTk()
-root.title("KBOT 1.0")
+root.title(f"KBOT {get_version()}")
 root.geometry("500x1100")
 root.resizable(False, False)
 
@@ -306,6 +306,9 @@ def lancer_donjon():
 btn_lancer = ctk.CTkButton(donjon_frame, text="🗡️ Farmer le donjon", command=lancer_donjon, font=ctk.CTkFont(size=18), fg_color="#00a1dc", width=200, height=50)
 btn_lancer.pack(pady=15)
 
+# Version info at bottom
+version_label = ctk.CTkLabel(root, text=f"Version {get_version()}", font=ctk.CTkFont(size=10), text_color="#666666")
+version_label.pack(side="bottom", pady=5)
 
 
 root.mainloop()

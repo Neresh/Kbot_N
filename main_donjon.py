@@ -2,10 +2,6 @@ import json
 import time
 import os
 import pyautogui
-import time
-import cv2
-import numpy as np
-
 
 from donjon_utils import (
     load_config,
