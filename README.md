@@ -16,13 +16,14 @@ Je décline toute responsabilité en cas de sanction ou de bannissement, lesquel
 ## 🚀 Fonctionnalités
 
 - Compatibilité **Dofus Retro** et **Dofus 2.0**
-- Interface graphique intuitive (CustomTkinter)
+- Interface graphique intuitive (CustomTkinter) avec affichage de version
 - Deux modules indépendants :
   - **Combat général** (clics, sorts, reconnaissance d'écran)
   - **Farming de donjon** (multi-salles, mouvements, cibles)
 - Sauvegarde automatique des configurations (`.txt` et `.json`)
 - Reconnaissance visuelle des mobs, boutons, avatars
 - Support des sorts principaux/alternatifs, gestion de la latence
+- Gestion des versions et vérifications automatiques
 
 ---
 
@@ -175,19 +176,26 @@ Créer un environnement virtuel (optionnel mais recommandé) puis installe les p
 pip install -r requirements.txt
 ```
 
-Contenu recommandé de `requirements.txt` :
+Le fichier `requirements.txt` contient les versions recommandées :
 
 ```
-pyautogui
-opencv-python
-pytesseract
-Pillow
-keyboard
-tk
-customtkinter
+pyautogui>=0.9.54
+opencv-python>=4.8.0
+pytesseract>=0.3.10
+Pillow>=10.0.0
+keyboard>=0.13.5
+customtkinter>=5.2.0
 ```
 
 ⚠️ Assure-toi que **Tesseract OCR** est bien installé sur ton système.
+
+### 🔄 Mise à jour
+
+Le script affiche sa version dans l'interface et utilise des dépendances avec version minimale pour garantir la compatibilité. Pour vérifier que le script est à jour :
+
+```bash
+python test_update.py
+```
 
 ---
 
