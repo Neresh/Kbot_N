@@ -1,14 +1,6 @@
 import pyautogui
 import time
 import os
-import cv2
-import numpy as np
-
-
-CONFIG_PATH = "config.txt"
-IMAGE_PATH = os.path.join("images", "retro")
-
-pyautogui.USE_IMAGE_NOT_FOUND_EXCEPTION = False
 
 from donjon_utils import (
     load_config,
@@ -17,6 +9,11 @@ from donjon_utils import (
     fight_loop,
     wait_for_avatar  # 👈 ajoute cette ligne
 )
+CONFIG_PATH = "config.txt"
+IMAGE_PATH = os.path.join("images", "retro")
+
+pyautogui.USE_IMAGE_NOT_FOUND_EXCEPTION = False
+
 
 def main():
     while True:
