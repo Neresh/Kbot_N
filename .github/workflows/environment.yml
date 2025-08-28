@@ -5,4 +5,10 @@ dependencies:
   - python=3.10
   - pip
   - pip:
-      - <your-required-pip-packages>
+      - pyautogui
+      - opencv-python
+      - pytesseract
+      - Pillow
+      - keyboard
+      - tk
+      - customtkinter
