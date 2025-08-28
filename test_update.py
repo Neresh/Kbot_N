@@ -1,6 +1,24 @@
 import unittest
 from unittest.mock import patch, MagicMock
 
+# Mock dependencies before importing modules that require them
+import sys
+mock_modules = {
+    'customtkinter': MagicMock(),
+    'tkinter': MagicMock(),
+    'tkinter.messagebox': MagicMock(),
+    'PIL': MagicMock(),
+    'PIL.Image': MagicMock(),
+    'pyautogui': MagicMock(),
+    'cv2': MagicMock(),
+    'numpy': MagicMock(),
+    'pytesseract': MagicMock(),
+    'keyboard': MagicMock(),
+}
+
+for module_name, mock_module in mock_modules.items():
+    sys.modules[module_name] = mock_module
+
 import version
 import interface
 import donjon_utils
