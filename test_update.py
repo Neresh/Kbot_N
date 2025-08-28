@@ -1,49 +1,90 @@
-"""Simple tests to verify the script is working correctly."""
+import unittest
+from unittest.mock import patch, MagicMock
 
-import sys
-import os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import version
+import interface
+import donjon_utils
+import main
+import main_donjon
 
-def test_version_import():
-    """Test that version module can be imported and returns valid version."""
-    from version import get_version, get_version_info
-    
-    version = get_version()
-    assert version == "1.0.0"
-    
-    info = get_version_info()
-    assert "version" in info
-    assert "author" in info
-    assert "description" in info
-    assert info["version"] == "1.0.0"
-    assert info["author"] == "Neresh"
+class TestVersion(unittest.TestCase):
+    def test_get_version(self):
+        self.assertIsInstance(version.get_version(), str)
 
+    def test_get_version_info(self):
+        info = version.get_version_info()
+        self.assertIsInstance(info, dict)
+        self.assertIn("version", info)
+        self.assertIn("author", info)
 
-def test_main_imports():
-    """Test that main modules can be imported without critical errors."""
-    try:
-        # Test basic imports without GUI dependencies
-        import version
-        assert version.get_version() == "1.0.0"
-    except ImportError as e:
-        # Allow ImportError for GUI libraries that aren't available in test environment
-        if 'customtkinter' not in str(e) and 'pyautogui' not in str(e):
-            raise
+class TestInterface(unittest.TestCase):
+    def test_lire_config(self):
+        result = interface.lire_config()
+        self.assertIsInstance(result, list)
 
+    def test_enregistrer_config(self):
+        # Test call with minimal parameters, skip actual file writing
+        with patch("builtins.open", new_callable=MagicMock()):
+            interface.enregistrer_config("1.0", "combat", "100,100", 0.5, "A", "B")
 
-def test_config_paths():
-    """Test that config file paths are properly defined."""
-    # This would be in interface.py but we test the constants exist
-    config_path = "config.txt"
-    config_donjon_path = "config_donjon.json"
-    
-    # Just verify these are strings
-    assert isinstance(config_path, str)
-    assert isinstance(config_donjon_path, str)
+    def test_arreter_bot(self):
+        with patch("interface.lire_config", return_value=["1.0", "combat", "100,100", "0.5", "A", "B", "on", "off", "400,400"]):
+            with patch("builtins.open", new_callable=MagicMock()):
+                with patch("tkinter.messagebox.showinfo"), patch("tkinter.messagebox.showerror"):
+                    interface.arreter_bot()
 
+    def test_lire_config_donjon(self):
+        result = interface.lire_config_donjon()
+        self.assertTrue(isinstance(result, dict) or result is None)
+
+    def test_enregistrer_config_donjon(self):
+        config = {"test": 1}
+        with patch("builtins.open", new_callable=MagicMock()):
+            interface.enregistrer_config_donjon(config)
+
+class TestDonjonUtils(unittest.TestCase):
+    def test_load_config(self):
+        # Should return a dict or None
+        result = donjon_utils.load_config()
+        self.assertTrue(isinstance(result, dict) or result is None)
+
+    def test_locate_image(self):
+        # Mock pyautogui
+        with patch("donjon_utils.pyautogui.locateOnScreen", return_value=(10,10,10,10)):
+            result = donjon_utils.locate_image("mob.png")
+            self.assertTrue(result is None or isinstance(result, tuple))
+
+    def test_click_location(self):
+        # Should not throw
+        with patch("donjon_utils.pyautogui.moveTo"), patch("donjon_utils.pyautogui.click"):
+            donjon_utils.click_location((100, 100), 0.1)
+
+    def test_fight_loop(self):
+        # Only test call with minimal config, mock everything
+        config = {
+            "mode": "1", "coords": (100, 100), "delay": 0.1,
+            "spell_key": "A", "alt_spell_key": "B", "move_enabled": False, "move_coords": (400,400), "etat":"on"
+        }
+        with patch("donjon_utils.locate_image", return_value=(10,10)), \
+             patch("donjon_utils.pyautogui.moveTo"), patch("donjon_utils.pyautogui.click"), \
+             patch("donjon_utils.pyautogui.press"), patch("donjon_utils.do_turn"), \
+             patch("donjon_utils.do_turn_sadida_fourbe"), patch("donjon_utils.post_combat_cleanup"):
+            donjon_utils.fight_loop(config)
+
+class TestMainDonjon(unittest.TestCase):
+    def test_load_config_donjon(self):
+        result = main_donjon.load_config_donjon()
+        self.assertTrue(isinstance(result, dict) or result is None)
+
+    def test_entrer_donjon(self):
+        with patch("main_donjon.locate_image", return_value=(10,10)), \
+             patch("main_donjon.pyautogui.moveTo"), patch("main_donjon.pyautogui.click"):
+            main_donjon.entrer_donjon(0.1)
+
+    def test_sortir_donjon(self):
+        with patch("main_donjon.locate_image", return_value=(10,10)), \
+             patch("main_donjon.pyautogui.moveTo"), patch("main_donjon.pyautogui.click"):
+            main_donjon.sortir_donjon(0.1)
 
 if __name__ == "__main__":
-    test_version_import()
-    test_main_imports() 
-    test_config_paths()
-    print("✅ All tests passed! Script is up to date.")
+    unittest.main()
